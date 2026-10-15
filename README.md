@@ -1,16 +1,3 @@
-Sí, es **completamente normal**: ocurrió un **conflicto de fusión (Merge Conflict)** porque Git no sabía qué versión del archivo `README.md` conservar (la de la web o la que editaste localmente).
-
-En la parte superior de tu archivo `README.md` se pegó un texto introductorio ("*Aquí tienes el código completamente unificado...*") y las marcas de conflicto (`<<<<<<<`, `=======`, `>>>>>>>`).
-
----
-
-### Solución limpia en 3 pasos:
-
-#### 1. Arreglar el `README.md`
-
-Abre el archivo `README.md` en VS Code, **borra absolutamente todo** su contenido y pega nuevamente el código limpio desde `# 🎬 X (Twitter) Video Downloader Bot`:
-
-```markdown
 # 🎬 X (Twitter) Video Downloader Bot
 
 Un bot de Telegram eficiente, ligero y libre de anuncios para descargar videos de X (Twitter) directamente a tu dispositivo con un solo toque desde el menú de compartir.
@@ -153,6 +140,4 @@ python bot.py
 ## 📜 Licencia
 
 Distribuido bajo la Licencia MIT.
-
-```
 
