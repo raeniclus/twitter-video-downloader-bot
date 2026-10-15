@@ -1,9 +1,3 @@
-¡Claro que sí! Un buen `README.md` es lo que transforma un script sencillo en un **proyecto de portafolio que llama la atención en GitHub**.
-
-Aquí tienes una plantilla lista en Markdown. Puedes copiarla directamente en un archivo llamado `README.md` en la raíz de tu repositorio y personalizar los enlaces o textos entre corchetes `[...]`.
-
----
-
 # 🎬 X (Twitter) Video Downloader Bot
 
 Un bot de Telegram eficiente, ligero y libre de anuncios para descargar videos de X (Twitter) directamente a tu dispositivo con un solo toque desde el menú de compartir.
