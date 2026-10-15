@@ -1,3 +1,16 @@
+Sí, es **completamente normal**: ocurrió un **conflicto de fusión (Merge Conflict)** porque Git no sabía qué versión del archivo `README.md` conservar (la de la web o la que editaste localmente).
+
+En la parte superior de tu archivo `README.md` se pegó un texto introductorio ("*Aquí tienes el código completamente unificado...*") y las marcas de conflicto (`<<<<<<<`, `=======`, `>>>>>>>`).
+
+---
+
+### Solución limpia en 3 pasos:
+
+#### 1. Arreglar el `README.md`
+
+Abre el archivo `README.md` en VS Code, **borra absolutamente todo** su contenido y pega nuevamente el código limpio desde `# 🎬 X (Twitter) Video Downloader Bot`:
+
+```markdown
 # 🎬 X (Twitter) Video Downloader Bot
 
 Un bot de Telegram eficiente, ligero y libre de anuncios para descargar videos de X (Twitter) directamente a tu dispositivo con un solo toque desde el menú de compartir.
@@ -8,7 +21,7 @@ Un bot de Telegram eficiente, ligero y libre de anuncios para descargar videos d
 
 ---
 
-## 🚀 Motiva del Proyecto
+## 🚀 Motivación del Proyecto
 
 Las herramientas y páginas web de terceros para descargar videos de X suelen estar saturadas de publicidad agresiva, acortadores de enlaces y pop-ups incómodos. Este proyecto nace para **resolver ese problema**, ofreciendo una solución limpia, rápida y automatizada que se integra directamente con el flujo nativo de compartir en smartphones.
 
@@ -41,45 +54,105 @@ Las herramientas y páginas web de terceros para descargar videos de X suelen es
 ├── .gitignore           # Exclusión de credenciales y carpetas temporales
 └── README.md            # Documentación del proyecto
 
+```
+
 ---
 
 ## ⚙️ Instalación y Configuración Local
 
 ### Prerrequisitos
 
-* Python 3.10 o superior.
-* Token de Bot obtenido mediante [@BotFather](https://t.me/BotFather) en Telegram.
+* **Python 3.10** o superior.
+* Token de Bot obtenido mediante **[@BotFather](https://t.me/BotFather)** en Telegram.
 
 ### Pasos de ejecución
 
 1. **Clonar el repositorio:**
 ```bash
-git clone [https://github.com/TU_USUARIO/TU_REPOSOTORIO.git](https://github.com/TU_USUARIO/TU_REPOSOTORIO.git)
-cd TU_REPOSOTORIO
+git clone [https://github.com/raeniclus/twitter-video-downloader-bot.git](https://github.com/raeniclus/twitter-video-downloader-bot.git)
+cd twitter-video-downloader-bot
 
 ```
 
 
 2. **Crear y activar un entorno virtual (opcional pero recomendado):**
-
+```bash
 python -m venv venv
-# En Windows:
-venv\Scripts\activate
-# En Linux/macOS:
+
+```
+
+
+* **En Windows (PowerShell):**
+```powershell
+.\venv\Scripts\activate
+
+```
+
+
+* **En Linux/macOS:**
+```bash
 source venv/bin/activate
+
+```
+
+
 
 
 3. **Instalar dependencias:**
-
+```bash
 pip install -r requirements.txt
+
+```
 
 
 4. **Configurar la Variable de Entorno:**
+* **En Windows (PowerShell):**
+```powershell
+$env:TELEGRAM_BOT_TOKEN="tu_token_aqui"
 
-Configura tu token de Telegram en tu entorno local o reemplázalo temporalmente para pruebas locales:
+```
+
+
+* **En Linux/macOS:**
+```bash
 export TELEGRAM_BOT_TOKEN="tu_token_aqui"
 
-5. **Iniciar el bot:**
+```
 
+
+
+
+5. **Iniciar el bot:**
+```bash
 python bot.py
+
+```
+
+
+
+---
+
+## ☁️ Despliegue en la Nube (Render.com)
+
+1. Crea un nuevo **Background Worker** en [Render](https://render.com/).
+2. Conecta tu repositorio de GitHub `twitter-video-downloader-bot`.
+3. Configura los parámetros de inicio:
+* **Build Command:** `pip install -r requirements.txt`
+* **Start Command:** `python bot.py`
+
+
+4. En la sección **Environment Variables**, agrega:
+* **Key:** `TELEGRAM_BOT_TOKEN`
+* **Value:** *Tu token de Telegram provisto por BotFather*.
+
+
+5. Haz clic en **Create Background Worker**.
+
+---
+
+## 📜 Licencia
+
+Distribuido bajo la Licencia MIT.
+
+```
 
