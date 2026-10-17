@@ -6,23 +6,8 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import yt_dlp
 
-# --- Servidor HTTP simulado para que Render mantenga el Web Service vivo ---
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"Bot status: OK")
-
-    def log_message(self, format, *args):
-        return  # Desactivar logs innecesarios del servidor web
-
-def start_dummy_server():
-    port = int(os.environ.get("PORT", 10000))
-    server = HTTPServer(("0.0.0.0", port), SimpleHTTPRequestHandler)
-    server.serve_forever()
-
-# Iniciar servidor web en un hilo secundario
-threading.Thread(target=start_dummy_server, daemon=True).start()
+from web import start_web_server
+threading.Thread(target=start_web_server, daemon=True).start()
 
 # --- Configurar logs para depuración ---
 logging.basicConfig(
