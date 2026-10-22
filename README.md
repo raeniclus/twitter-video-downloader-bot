@@ -1,11 +1,11 @@
-# Twitter/X Video Downloader
+# Video Downloader
 
-Herramienta personal para descargar videos de X (Twitter) sin anuncios. Incluye dos formas de uso que comparten el mismo código: un bot de Telegram y una página web.
+Herramienta personal para descargar videos de Twitter (X) y TikTok sin anuncios. Incluye dos formas de uso que comparten el mismo código: un bot de Telegram y una página web.
 
 ## Funcionalidades
 
-- **Bot de Telegram:** envías un enlace de X y recibes el video como archivo `.mp4`.
-- **Página web:** pegas el enlace, el video se reproduce en el navegador y puedes guardarlo con un botón de descarga. Está pensada para usarse desde el teléfono y no requiere instalar nada.
+- **Bot de Telegram:** envías un enlace de Twitter (X) y recibes el video como archivo `.mp4`. Por ahora no admite TikTok.
+- **Página web:** pegas un enlace de Twitter (X) o TikTok, el video se reproduce en el navegador y puedes guardarlo con un botón de descarga. Está pensada para usarse desde el teléfono y no requiere instalar nada.
 
 ## Cómo funciona
 
@@ -13,13 +13,14 @@ Herramienta personal para descargar videos de X (Twitter) sin anuncios. Incluye 
 
 - El bot descarga el video a la carpeta temporal `downloads/`, lo envía por Telegram y borra el archivo al terminar.
 - La página web no guarda nada en disco. Obtiene la dirección directa del video y la retransmite desde el servidor, porque X rechaza (error 403) las peticiones directas desde el navegador a `video.twimg.com`.
-- El servidor web solo acepta enlaces de `x.com` y `twitter.com`.
+- El servidor web solo acepta enlaces de `x.com`, `twitter.com` y `tiktok.com` (incluidos los enlaces cortos `vm.tiktok.com` y `vt.tiktok.com`).
 
 ## Estructura del proyecto
 
 ```
 bot.py            Bot de Telegram y arranque del servidor web
 web.py            Página web y retransmisión del video
+logo.jpg          Imagen de la cabecera y del icono de la página
 requirements.txt  Dependencias con versión fija
 .gitignore
 README.md
@@ -95,7 +96,9 @@ La página raíz responde de inmediato sin consultar a X, por lo que sirve como 
 - Render puede reiniciar un servicio gratuito en cualquier momento. Tras un reinicio o una suspensión, la primera petición tarda más de lo normal.
 - El tráfico de video de la página web pasa por el servidor y cuenta contra el ancho de banda incluido en el plan gratuito.
 - No hay autenticación: cualquier persona que conozca la dirección del servicio o el nombre del bot puede usarlos.
-- Solo funciona con publicaciones que yt-dlp pueda extraer. Las publicaciones privadas o restringidas no se pueden descargar.
+- Solo funciona con publicaciones que yt-dlp pueda extraer. Las publicaciones privadas o restringidas no se pueden descargar, y las publicaciones de TikTok que son fotos en lugar de video tampoco.
+- TikTok puede bloquear las peticiones que vienen de servidores como los de Render, por lo que algunos enlaces pueden fallar de forma intermitente.
+- YouTube no está soportado: bloquea con frecuencia las IP de servidores en la nube.
 
 ## Mantenimiento
 
