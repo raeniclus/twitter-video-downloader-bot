@@ -20,7 +20,7 @@ Herramienta personal para descargar videos de Twitter (X) y TikTok sin anuncios.
 ```
 bot.py            Bot de Telegram y arranque del servidor web
 web.py            Página web y retransmisión del video
-logo.jpg          Imagen de la cabecera y del icono de la página
+logo.jpg          Imagen de la cabecera y del icono de la página (reemplazalo por la imagen que desees)
 requirements.txt  Dependencias con versión fija
 .gitignore
 README.md
@@ -102,7 +102,9 @@ La página raíz responde de inmediato sin consultar a X, por lo que sirve como 
 
 ## Mantenimiento
 
-X cambia con frecuencia y las versiones antiguas de yt-dlp dejan de funcionar. Si las descargas empiezan a fallar, actualiza la versión de `yt-dlp` en `requirements.txt` y haz push para que Render vuelva a desplegar.
+X y TikTok cambian con frecuencia y las versiones antiguas de yt-dlp dejan de funcionar. Si las descargas empiezan a fallar, actualiza la versión de `yt-dlp` en `requirements.txt` y haz push para que Render vuelva a desplegar. Las versiones más recientes de yt-dlp exigen Python 3.11 o superior, así que conviene revisar la versión de Python del servicio antes de actualizar.
+
+TikTok solo funciona si yt-dlp puede imitar a un navegador real, y para eso necesita `curl-cffi`. Por eso `requirements.txt` instala `yt-dlp[curl-cffi]` y no solo `yt-dlp`. Si una descarga falla, la causa exacta queda registrada en los Logs del servicio en Render.
 
 ## Aviso
 

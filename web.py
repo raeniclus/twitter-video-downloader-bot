@@ -1,4 +1,5 @@
 import html
+import logging
 import os
 import time
 import urllib.request
@@ -45,8 +46,13 @@ h1{font:400 32px/1.2 var(--serif);margin:24px 0 8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px}
 .chips{display:flex;gap:8px;margin:0 0 16px}
 .chips span{padding:2px 10px;border-radius:8px;background:var(--nested);color:var(--soft);font:500 12px var(--mono)}
-input{width:100%;padding:10px 12px;background:transparent;color:var(--ink);border:1px solid var(--edge);
+.field{position:relative}
+input{width:100%;padding:10px 44px 10px 12px;background:transparent;color:var(--ink);border:1px solid var(--edge);
 border-radius:8px;font:inherit;font-size:16px}
+.clear{display:none;position:absolute;right:5px;top:50%;transform:translateY(-50%);width:36px;height:36px;
+border:0;border-radius:8px;background:transparent;color:var(--muted);font:400 24px/1 var(--sans);cursor:pointer}
+.clear:hover{background:var(--nested);color:var(--ink)}
+.field.has .clear{display:block}
 input::placeholder{color:var(--muted)}
 input:focus{outline:2px solid var(--accent);outline-offset:2px}
 .row{display:flex;gap:8px;margin-top:20px}
@@ -66,11 +72,18 @@ footer .dot{width:6px;height:6px;margin:0 8px 1px 0}
 <p class=sub>Pega un enlace de Twitter o TikTok, míralo aquí y guárdalo. Sin anuncios.</p>
 <div class=card>
 <div class=chips><span>twitter</span><span>tiktok</span></div>
-<form><input name=url placeholder="Pega el enlace de Twitter o TikTok" value="@URL@" autocomplete=off inputmode=url@AF@>
-<div class=row><button class=btn>Ver video</button></div></form>@BODY@
+<form><div class=field><input id=u name=url placeholder="Pega el enlace de Twitter o TikTok" value="@URL@" autocomplete=off inputmode=url@AF@>
+<button type=button class=clear aria-label="Borrar enlace" title="Borrar enlace">&times;</button></div>
+<div class=row><button class=btn>Ver video</button></div></form><div id=out>@BODY@</div>
 </div>
 <footer><span class=dot></span>made by reuniclus</footer>
-</main>"""
+</main>
+<script>
+var u=document.getElementById('u'),f=u.parentNode,o=document.getElementById('out');
+function t(){f.classList.toggle('has',u.value!=='')}
+u.addEventListener('input',t);t();
+f.querySelector('.clear').onclick=function(){u.value='';o.innerHTML='';t();u.focus()};
+</script>"""
 
 
 def resolve(url):
@@ -81,8 +94,12 @@ def resolve(url):
     opts = {"quiet": True, "no_warnings": True, "format": "best[ext=mp4]/best"}
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=False)
-    info = (info.get("entries") or [info])[0]
-    direct, headers = info["url"], info.get("http_headers") or {}
+        info = (info.get("entries") or [info])[0]
+        direct, headers = info["url"], dict(info.get("http_headers") or {})
+        # yt-dlp ya no incluye Cookie en http_headers y el CDN de TikTok la exige
+        cookie = "; ".join(f"{c.name}={c.value}" for c in ydl.cookiejar.get_cookies_for_url(direct))
+    if cookie:
+        headers["Cookie"] = cookie
     _cache[url] = (time.time() + CACHE_TTL, direct, headers)
     return direct, headers
 
@@ -130,9 +147,11 @@ class Handler(BaseHTTPRequestHandler):
                 req.add_header("Range", self.headers["Range"])
             up = urllib.request.urlopen(req, timeout=30)
         except HTTPError as e:
+            logging.warning("El sitio respondió %s para %s", e.code, url)
             self.send_error(502, f"El sitio respondió {e.code}")
             return
         except Exception:
+            logging.exception("No se pudo obtener %s", url)  # la causa real queda en los Logs de Render
             self.send_error(502, "No se pudo obtener el video")
             return
         with up:
